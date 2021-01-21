@@ -1,0 +1,32 @@
+version: "2"
+
+services:
+  mysql:
+    container_name: mysql_5.7
+    image: mysql:5.7
+    restart: always
+    ports:
+      - "6603:3306"
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "adminadmin"
+    command: --max_allowed_packet=32505856      
+  solo:
+    container_name: solo
+    image: b3log/solo:latest
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      RUNTIME_DB: "MYSQL"
+      JDBC_USERNAME: "root"
+      JDBC_PASSWORD: "adminadmin"
+      JDBC_DRIVER: "com.mysql.cj.jdbc.Driver"
+      JDBC_URL: "jdbc:mysql://mysql:3306/solo?useUnicode=yes&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC"
+    command: --listen_port=80 --server_scheme=http --server_host=www.dduan.site
+
+
+
+
+
